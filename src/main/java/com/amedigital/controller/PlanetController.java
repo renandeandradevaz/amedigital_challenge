@@ -1,6 +1,7 @@
 package com.amedigital.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,12 @@ public class PlanetController {
 	Planet findById(@PathVariable("id") String id) {
 
 		logger.info("Finding planet by id = {}", id);
-		return planetRepository.findById(id).get();
+		Optional<Planet> optionalPlanet = planetRepository.findById(id);
+
+		if (optionalPlanet.isPresent()) {
+			return optionalPlanet.get();
+		}
+		return null;
 	}
 
 	@RequestMapping(value = "/v1/planets", method = RequestMethod.POST)

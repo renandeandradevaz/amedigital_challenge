@@ -2,7 +2,7 @@ package com.amedigital.dto;
 
 import java.util.List;
 
-public class PlanetDto {
+public class SwapiPlanetDto {
 
 	private List<String> films;
 
