@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,9 +47,7 @@ public class PlanetController {
 	}
 
 	@RequestMapping(value = "/planets", method = RequestMethod.POST)
-	Planet create(@RequestBody Planet planet, @RequestHeader(value = "User-Agent") String userAgent) {
-
-		System.out.println(userAgent);
+	Planet create(@RequestBody Planet planet) {
 
 		planet.setNumberOfAppearances(swapiClient.getPlanetInfo(planet.getExternalId()).getFilms().size());
 		logger.info("Creating planet {}", planet);
