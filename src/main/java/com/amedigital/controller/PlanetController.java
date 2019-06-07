@@ -7,11 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.amedigital.client.SwapiClient;
 import com.amedigital.model.Planet;
 import com.amedigital.repository.PlanetRepository;
 
@@ -23,8 +25,11 @@ public class PlanetController {
 	@Autowired
 	private PlanetRepository planetRepository;
 
+	@Autowired
+	private SwapiClient swapiClient;
+
 	@RequestMapping(value = "/planets", method = RequestMethod.GET)
-	public List<Planet> search(@RequestParam(value = "name", defaultValue = "") String name) {
+	List<Planet> search(@RequestParam(value = "name", defaultValue = "") String name) {
 
 		if (name.equals("")) {
 			logger.info("Listing planets");
@@ -36,22 +41,25 @@ public class PlanetController {
 	}
 
 	@RequestMapping(value = "/planets/{id}", method = RequestMethod.GET)
-	public Planet findById(@PathVariable("id") String id) {
+	Planet findById(@PathVariable("id") String id) {
 
 		logger.info("Finding planet by id = {}", id);
 		return planetRepository.findById(id).get();
 	}
 
 	@RequestMapping(value = "/planets", method = RequestMethod.POST)
-	public Planet create(@RequestBody Planet planet) {
+	Planet create(@RequestBody Planet planet, @RequestHeader(value = "User-Agent") String userAgent) {
 
+		System.out.println(userAgent);
+
+		planet.setNumberOfAppearances(swapiClient.getPlanetInfo(planet.getExternalId()).getFilms().size());
 		logger.info("Creating planet {}", planet);
 		planetRepository.save(planet);
 		return findById(planet.getId());
 	}
 
 	@RequestMapping(value = "/planets/{id}", method = RequestMethod.DELETE)
-	public List<Planet> delete(@PathVariable("id") String id) {
+	List<Planet> delete(@PathVariable("id") String id) {
 
 		logger.info("Deleting planet with id = {}", id);
 		planetRepository.deleteById(id);

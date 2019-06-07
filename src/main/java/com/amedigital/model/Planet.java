@@ -5,18 +5,18 @@ import org.springframework.data.annotation.Id;
 public class Planet {
 
 	@Id
-	public String id;
+	private String id;
 
-	public String name;
-	public String climate;
-	public String terrain;
-
+	private String name;
+	private String climate;
+	private String terrain;
 	private Integer externalId;
+	private Integer numberOfAppearances;
 
 	@Override
 	public String toString() {
 		return "Planet [id=" + id + ", name=" + name + ", climate=" + climate + ", terrain=" + terrain + ", externalId="
-				+ externalId + "]";
+				+ externalId + ", numberOfAppearances=" + numberOfAppearances + "]";
 	}
 
 	public String getId() {
@@ -57,5 +57,13 @@ public class Planet {
 
 	public void setExternalId(Integer externalId) {
 		this.externalId = externalId;
+	}
+
+	public Integer getNumberOfAppearances() {
+		return numberOfAppearances;
+	}
+
+	public void setNumberOfAppearances(Integer numberOfAppearances) {
+		this.numberOfAppearances = numberOfAppearances;
 	}
 }
