@@ -27,7 +27,7 @@ public class PlanetController {
 	@Autowired
 	private SwapiClient swapiClient;
 
-	@RequestMapping(value = "/planets", method = RequestMethod.GET)
+	@RequestMapping(value = "/v1/planets", method = RequestMethod.GET)
 	List<Planet> search(@RequestParam(value = "name", defaultValue = "") String name) {
 
 		if (name.equals("")) {
@@ -39,14 +39,14 @@ public class PlanetController {
 		return planetRepository.findByName(name);
 	}
 
-	@RequestMapping(value = "/planets/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/v1/planets/{id}", method = RequestMethod.GET)
 	Planet findById(@PathVariable("id") String id) {
 
 		logger.info("Finding planet by id = {}", id);
 		return planetRepository.findById(id).get();
 	}
 
-	@RequestMapping(value = "/planets", method = RequestMethod.POST)
+	@RequestMapping(value = "/v1/planets", method = RequestMethod.POST)
 	Planet create(@RequestBody Planet planet) {
 
 		planet.setNumberOfAppearances(swapiClient.getPlanetInfo(planet.getExternalId()).getFilms().size());
@@ -55,7 +55,7 @@ public class PlanetController {
 		return findById(planet.getId());
 	}
 
-	@RequestMapping(value = "/planets/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/v1/planets/{id}", method = RequestMethod.DELETE)
 	List<Planet> delete(@PathVariable("id") String id) {
 
 		logger.info("Deleting planet with id = {}", id);
